@@ -29,7 +29,7 @@ let redraw = (data) => {
 
   let yScale = d3.scaleLinear()
   .domain([0, d3.max(data)])
-  .range([0, height])
+  .range([0, height - margin])
 
   let yAxis = d3.scaleLinear()
   .domain([0, d3.max(data)])
@@ -49,10 +49,10 @@ let redraw = (data) => {
   .append('rect')
   .attr('class', 'bar')
   .attr('x', (d, i) => {
-    return i * xLength + marginLeft
+    return i * xLength + marginLeft -10
   })
   .attr('y', (d) => {
-    return height - yScale(d)
+    return height - yScale(d) - margin
   })
   .attr('width', xLength - 2)
   .attr('height', (d) => {
@@ -62,13 +62,13 @@ let redraw = (data) => {
 
   svg.append('g')
   .attr('class', 'axisSteelBlue')
-  .attr('transform', `translate(${marginLeft})`)
-  .call(d3.axisLeft(yAxis))
+  .attr('transform', `translate(${marginLeft - 10})`)
+  .call(d3.axisLeft(yAxis).ticks(d3.max(data)))
 
   svg.append('g')
   .attr('class', 'axisSteelBlue')
-  .attr('transform', `translate(${marginLeft}, ${height - margin})`)
-  .call(d3.axisBottom(xAxis))
+  .attr('transform', `translate(${marginLeft - 10}, ${height - margin})`)
+  .call(d3.axisBottom(xAxis).ticks(data.length))
 }
 
 reload()
